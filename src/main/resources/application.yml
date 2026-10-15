@@ -1,0 +1,51 @@
+
+spring:
+  application:
+    name: reactive-product-hub
+
+  profiles:
+    default: dev
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+external:
+  products:
+    base-url: https://dummyjson.com
+    timeout: 3s
+
+
+# spring:
+#   application:
+#     name: reactive-product-hub
+
+#   r2dbc:
+#     url: r2dbc:postgresql://localhost:5432/reactive_product_hub
+#     username: postgres
+#     password: "123456789"
+
+#   flyway:
+#     enabled: true
+#     url: jdbc:postgresql://localhost:5432/reactive_product_hub
+#     user: postgres
+#     password: "123456789"
+
+# server:
+#   port: 8080
+
+# management:
+#   endpoints:
+#     web:
+#       exposure:
+#         include: health,info
+
+# external:
+#   products:
+#     base-url: https://dummyjson.com
+#     timeout: 3s

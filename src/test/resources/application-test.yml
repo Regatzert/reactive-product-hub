@@ -1,0 +1,13 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/reactive_product_hub_test
+    username: postgres
+    password: "123456789"
+
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/reactive_product_hub_test
+    user: postgres
+    password: "123456789"
+    locations: classpath:db/migration
+    baseline-on-migrate: false

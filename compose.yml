@@ -1,0 +1,44 @@
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: reactive-product-hub-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: reactive_product_hub
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Debes definir DB_PASSWORD en el archivo .env}
+    ports:
+      # - "5432:5432"
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: reactive-product-hub-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SERVER_PORT: 8080
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:?Debes definir DB_PASSWORD en el archivo .env}
+      DB_R2DBC_URL: r2dbc:postgresql://postgres:5432/reactive_product_hub
+      DB_FLYWAY_URL: jdbc:postgresql://postgres:5432/reactive_product_hub
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:

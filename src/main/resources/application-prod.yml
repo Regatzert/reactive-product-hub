@@ -1,0 +1,13 @@
+
+spring:
+  r2dbc:
+    url: ${DB_R2DBC_URL:r2dbc:postgresql://postgres:5432/reactive_product_hub}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  flyway:
+    enabled: true
+    url: ${DB_FLYWAY_URL:jdbc:postgresql://postgres:5432/reactive_product_hub}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    locations: classpath:db/migration
